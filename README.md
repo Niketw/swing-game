@@ -1,1 +1,1 @@
-Swing game for OOP mini project
+2D platformer game Hobby project

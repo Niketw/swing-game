@@ -46,13 +46,13 @@ public class GamePanel extends JPanel {
 
     private void updateRectangle() {
         dx += xDir;
-        if (dx > 800 || dx < 0) {
+        if (dx > 600 || dx < 0) {
             xDir *= -1;
             color = randomColor();
         }
 
         dy += yDir;
-        if (dy > 600 || dy < 0) {
+        if (dy > 500 || dy < 0) {
             yDir *= -1;
             color = randomColor();
         }
