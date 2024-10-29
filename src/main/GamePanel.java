@@ -3,65 +3,65 @@ package main;
 import inputs.KeyboardInput;
 import inputs.MouseInput;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
-import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GamePanel extends JPanel {
     private MouseInput mouseInput;
-
-    private float dx = 300.0f, dy = 200.0f;
-    private float xDir = 1.0f, yDir = 1.0f;
-    private Color color = new Color(100, 100, 100);
-    private Random random = new Random();
+    private float dx = 100, dy = 100;
+    private BufferedImage img, subImg;
 
     public GamePanel() {
-        random = new Random();
         mouseInput = new MouseInput(this);
+
+        importImage();
+
+        setPanelSize();
         addKeyListener(new KeyboardInput(this));
         addMouseListener(mouseInput);
         addMouseMotionListener(mouseInput);
     }
 
-    public void changeDx(int val) {
-        this.dx += val;
+    private void importImage() {
+        InputStream is = getClass().getResourceAsStream("/player_sprites.png");
+        try {
+            assert is != null;
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setPanelSize() {
+        Dimension size = new Dimension(1280, 800);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int i = 0, j = 0;
+
+        subImg = img.getSubimage(i * 64, j * 40, 64, 40);
+
+        g.drawImage(subImg, (int)dx, (int)dy, 64 * 3, 40 * 3,  null);
     }
 
     public void changeDy(int val) {
         this.dy += val;
     }
 
+    public void changeDx(int val) {
+        this.dx += val;
+    }
+
     public void setPosition(int x, int y) {
         this.dx = x;
         this.dy = y;
-    }
-
-    private Color randomColor() {
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-
-        return new Color(r, g, b);
-    }
-
-    private void updateRectangle() {
-        dx += xDir;
-        if (dx > 600 || dx < 0) {
-            xDir *= -1;
-            color = randomColor();
-        }
-
-        dy += yDir;
-        if (dy > 500 || dy < 0) {
-            yDir *= -1;
-            color = randomColor();
-        }
-    }
-
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        updateRectangle();
-        g.setColor(color);
-        g.fillRect((int) dx, (int) dy, 200, 50);
     }
 }
