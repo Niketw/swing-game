@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
     private float xDelta = 100, yDelta = 100;
     private BufferedImage img;
     private BufferedImage[][] animations;
-    private int aniTick, aniIndex, aniSpeed = 15;
+    private int aniTick, aniIndex, aniSpeed = 25;
     private int playerAction = IDLE;
     private int playerDir = -1;
     private boolean moving = false;
@@ -95,29 +95,31 @@ public class GamePanel extends JPanel {
         if (moving) {
             switch (playerDir) {
                 case LEFT:
-                    xDelta -= 5;
+                    xDelta -= 3;
                     break;
                 case UP:
-                    yDelta -= 5;
+                    yDelta -= 3;
                     break;
                 case RIGHT:
-                    xDelta += 5;
+                    xDelta += 3;
                     break;
                 case DOWN:
-                    yDelta += 5;
+                    yDelta += 3;
                     break;
             }
         }
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
+    public void updateGame() {
         updateAnimationTick();
         setAnimation();
         updatePos();
+    }
 
-        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 64 * 4, 40 * 4, null);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 64 * 3, 40 * 3, null);
     }
 
 }
